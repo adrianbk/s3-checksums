@@ -1,0 +1,37 @@
+apply plugin: 'groovy'
+apply plugin: 'maven-publish'
+
+repositories { jcenter() }
+dependencies {
+  compile 'org.slf4j:slf4j-api:1.7.12'
+  compile 'org.codehaus.groovy:groovy-all:2.4.3'
+}
+
+publishing {
+  repositories {
+    maven {
+      url "http://127.0.0.1:8081/artifactory/libs-release-local/"
+      credentials {
+        username "admin"
+        password "password"
+      }
+    }
+
+    maven {
+      url "s3://gradle-maven-repo/libs-release-local"
+      credentials(AwsCredentials) {
+        accessKey "${System.getenv('AWS_KEY')}"
+        secretKey "${System.getenv('AWS_SECRET')}"
+      }
+    }
+  }
+
+  publications {
+    mavenJava(MavenPublication) {
+      groupId 'com.me'
+      artifactId 'sample-project'
+      version '1.2'
+      from components.java
+    }
+  }
+}
