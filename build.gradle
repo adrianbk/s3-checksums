@@ -35,3 +35,7 @@ publishing {
     }
   }
 }
+
+wrapper {
+  gradleVersion = "2.5-20150525220035+0000"
+}
